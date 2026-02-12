@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Projet DOM - Panier d'achat</title>
+
+  <!-- Font Awesome pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .cart-container {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    .item img {
+      width: 80px;
+      border-radius: 10px;
+    }
+
+    .item-info {
+      flex: 1;
+      margin-left: 15px;
+    }
+
+    .quantity {
+      display: flex;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 6px 10px;
+      border: none;
+      cursor: pointer;
+      background: #ddd;
+      border-radius: 5px;
+      margin: 0 5px;
+    }
+
+    .like {
+      color: gray;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .like.liked {
+      color: red;
+    }
+
+    .delete {
+      color: crimson;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .total {
+      text-align: right;
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🛒 Mon Panier</h1>
+
+<div class="cart-container">
+
+  <!-- ARTICLE 1 -->
+  <div class="item">
+    <img src="https://via.placeholder.com/80" alt="Produit">
+
+    <div class="item-info">
+      <h3>Chaussures Nike</h3>
+      <p class="price" data-price="15000">15000 FCFA</p>
+    </div>
+
+    <div class="quantity">
+      <button class="btn minus">-</button>
+      <span class="qte">1</span>
+      <button class="btn plus">+</button>
+    </div>
+
+    <i class="fa fa-heart like"></i>
+    <i class="fa fa-trash delete"></i>
+  </div>
+
+  <!-- ARTICLE 2 -->
+  <div class="item">
+    <img src="https://via.placeholder.com/80" alt="Produit">
+
+    <div class="item-info">
+      <h3>Montre Connectée</h3>
+      <p class="price" data-price="25000">25000 FCFA</p>
+    </div>
+
+    <div class="quantity">
+      <button class="btn minus">-</button>
+      <span class="qte">1</span>
+      <button class="btn plus">+</button>
+    </div>
+
+    <i class="fa fa-heart like"></i>
+    <i class="fa fa-trash delete"></i>
+  </div>
+
+  <!-- ARTICLE 3 -->
+  <div class="item">
+    <img src="https://via.placeholder.com/80" alt="Produit">
+
+    <div class="item-info">
+      <h3>Sac à dos</h3>
+      <p class="price" data-price="10000">10000 FCFA</p>
+    </div>
+
+    <div class="quantity">
+      <button class="btn minus">-</button>
+      <span class="qte">1</span>
+      <button class="btn plus">+</button>
+    </div>
+
+    <i class="fa fa-heart like"></i>
+    <i class="fa fa-trash delete"></i>
+  </div>
+
+  <!-- TOTAL -->
+  <div class="total">
+    Total : <span id="total">0</span> FCFA
+  </div>
+
+</div>
+
+<script>
+/* ===============================
+   FONCTION CALCUL TOTAL
+================================= */
+function updateTotal() {
+  let total = 0;
+  document.querySelectorAll(".item").forEach(item => {
+    const price = parseInt(item.querySelector(".price").dataset.price);
+    const quantity = parseInt(item.querySelector(".qte").textContent);
+    total += price * quantity;
+  });
+  document.getElementById("total").textContent = total;
+}
+
+/* ===============================
+   BOUTONS + (AUGMENTER QUANTITÉ)
+================================= */
+document.querySelectorAll(".plus").forEach(btn => {
+  btn.addEventListener("click", function () {
+    const qteElement = this.parentElement.querySelector(".qte");
+    qteElement.textContent = parseInt(qteElement.textContent) + 1;
+    updateTotal();
+  });
+});
+
+/* ===============================
+   BOUTONS - (DIMINUER QUANTITÉ)
+================================= */
+document.querySelectorAll(".minus").forEach(btn => {
+  btn.addEventListener("click", function () {
+    const qteElement = this.parentElement.querySelector(".qte");
+    let value = parseInt(qteElement.textContent);
+    if (value > 1) {
+      qteElement.textContent = value - 1;
+    }
+    updateTotal();
+  });
+});
+
+/* ===============================
+   SUPPRESSION ARTICLE
+================================= */
+document.querySelectorAll(".delete").forEach(btn => {
+  btn.addEventListener("click", function () {
+    this.parentElement.remove();
+    updateTotal();
+  });
+});
+
+/* ===============================
+   BOUTON LIKE ❤️
+================================= */
+document.querySelectorAll(".like").forEach(btn => {
+  btn.addEventListener("click", function () {
+    this.classList.toggle("liked");
+  });
+});
+
+/* INITIALISATION TOTAL */
+updateTotal();
+</script>
+
+</body>
+</html>
